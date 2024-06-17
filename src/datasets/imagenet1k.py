@@ -58,8 +58,8 @@ def make_imagenet1k(
     return dataset, data_loader, dist_sampler
 
 class GsocDataset(torch.utils.data.Dataset):
-    def __init__(self, h5_path, transform=None):
-        self.h5_file = h5py.File(h5_path, "r")
+    def __init__(self, root, transform=None):
+        self.h5_file = h5py.File(root, "r")
         self.transform = transform
 
     def __getitem__(self, index):
