@@ -5,7 +5,7 @@ data:
   - 0.3
   - 1.0
   crop_size: 126
-  image_folder: /content/drive/MyDrive/Data
+  image_folder: /content/drive/MyDrive/Data/Dataset_Specific_Unlabelled.h5
   num_workers: 2
   pin_mem: true
   root_path: /content/drive/MyDrive/Data
