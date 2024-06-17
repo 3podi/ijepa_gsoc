@@ -15,6 +15,7 @@ from logging import getLogger
 
 import torch
 import h5py
+from torch.utils.data import RandomSampler
 import torchvision
 
 _GLOBAL_SEED = 0
@@ -27,8 +28,6 @@ def make_imagenet1k(
     collator=None,
     pin_mem=True,
     num_workers=8,
-    world_size=1,
-    rank=0,
     root_path=None,
     image_folder=None,
     training=True,
@@ -40,10 +39,8 @@ def make_imagenet1k(
         root=root_path,
         transform=transform)
     logger.info('GSOC dataset created')
-    dist_sampler = torch.utils.data.distributed.DistributedSampler(
-        dataset=dataset,
-        num_replicas=world_size,
-        rank=rank)
+    dist_sampler = RandomSampler(dataset)
+
     data_loader = torch.utils.data.DataLoader(
         dataset,
         collate_fn=collator,
@@ -68,8 +65,6 @@ class GsocDataset(torch.utils.data.Dataset):
         else:
             return self.h5_file["jet"][index]
         
-        
-
     def __len__(self):
         return self.h5_file["jet"].size
 
