@@ -373,9 +373,11 @@ def main(args, resume_preempt=False):
 
 
 if __name__ == "__main__":
+    args = parser.parse_args()
+
     # -- load script params
     params = None
-    with open(parser.fname, 'r') as y_file:
+    with open(args.fname, 'r') as y_file:
         params = yaml.load(y_file, Loader=yaml.FullLoader)
         logger.info('loaded params...')
         pp = pprint.PrettyPrinter(indent=4)
