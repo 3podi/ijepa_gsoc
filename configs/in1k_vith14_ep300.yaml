@@ -8,7 +8,7 @@ data:
   image_folder: /content/drive/MyDrive/Data/Dataset_Specific_Unlabelled.h5
   num_workers: 2
   pin_mem: true
-  root_path: /content/drive/MyDrive/Data
+  root_path: /content/drive/MyDrive/Data/Dataset_Specific_Unlabelled.h5
   use_color_distortion: false
   use_gaussian_blur: false
   use_horizontal_flip: false
