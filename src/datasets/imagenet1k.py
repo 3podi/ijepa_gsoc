@@ -68,3 +68,54 @@ class GsocDataset(torch.utils.data.Dataset):
     def __len__(self):
         return self.h5_file["jet"].size
 
+class CustomDataLoader():
+    def __init__(self, file_path, indices, batch_size):
+        self.file_path = file_path
+        self.h5_file = h5py.File(file_path, "r")
+        self.indices = indices
+        self.batch_size = batch_size
+        self.on_epoch_end()
+        self.idx = 0
+
+    def __len__(self):
+        return int(np.ceil(len(self.indices) / self.batch_size))
+
+    def __getitem__(self):
+        start_idx = self.idx * self.batch_size
+        end_idx = min((self.idx + 1) * self.batch_size, len(self.indices))
+        batch_indices = self.indices[start_idx:end_idx]
+
+        t0 = time.time()
+        batch_indices = np.sort(batch_indices)
+        t1 = time.time()
+        diff = t1-t0
+        print('Time to sort: ', diff)
+        # Load data from file based on batch indices
+        t0 = time.time()
+        imgs = self.load_data(batch_indices)
+        t1 = time.time()
+        diff = t1-t0
+        print('Time to load: ', diff)
+
+        # Preprocess data
+        imgs = self.process_data(imgs)
+        self.idx +=1
+
+        return imgs
+
+    def load_data(self, batch_indices):
+        # Load rows corresponding to batch_indices from the file
+        #with h5py.File(self.file_path, 'r') as f:
+        #  data = f['jet'][batch_indices]
+        data = self.h5_file['jet'][batch_indices]
+
+        return data
+
+    def process_data(self, data):
+
+        return data / 255.
+
+    def on_epoch_end(self):
+        # Shuffle indices at the end of each epoch
+        np.random.shuffle(self.indices)
+

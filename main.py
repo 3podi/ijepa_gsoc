@@ -264,9 +264,6 @@ def main(args, resume_preempt=False):
     for epoch in range(start_epoch, num_epochs):
         logger.info('Epoch %d' % (epoch + 1))
 
-        # -- update distributed-data-loader epoch
-        unsupervised_sampler.set_epoch(epoch)
-
         loss_meter = AverageMeter()
         maskA_meter = AverageMeter()
         maskB_meter = AverageMeter()
