@@ -144,6 +144,7 @@ def main(args, resume_preempt=False):
 
     # -- log/checkpointing paths
     log_file = os.path.join(folder, f'{tag}_.csv')
+    epoch_log_file = os.path.join(folder, f'{tag}_epoch.csv')
     save_path = os.path.join(folder, f'{tag}' + '-ep{epoch}.pth.tar')
     latest_path = os.path.join(folder, f'{tag}-latest.pth.tar')
     load_path = None
@@ -158,6 +159,12 @@ def main(args, resume_preempt=False):
                            ('%.5f', 'mask-A'),
                            ('%.5f', 'mask-B'),
                            ('%d', 'time (ms)'))
+    
+    # -- make csv_logger for end of epoch losses
+    epoch_csv_logger = CSVLogger(epoch_log_file,
+                           ('%d', 'epoch'),
+                           ('%.5f', 'train loss'),
+                           ('%.5f', 'val loss'))
 
     # -- init model
     encoder, predictor = init_model(
@@ -190,7 +197,7 @@ def main(args, resume_preempt=False):
         color_jitter=color_jitter)
 
     # -- init data-loaders/samplers
-    _, unsupervised_loader, unsupervised_sampler = make_imagenet1k(
+    _, unsupervised_loader, val_unsupervised_loader = make_imagenet1k(
             transform=transform,
             batch_size=batch_size,
             collator=mask_collator,
@@ -217,9 +224,7 @@ def main(args, resume_preempt=False):
         num_epochs=num_epochs,
         ipe_scale=ipe_scale,
         use_bfloat16=use_bfloat16)
-    #encoder = DistributedDataParallel(encoder, static_graph=True)
-    #predictor = DistributedDataParallel(predictor, static_graph=True)
-    #target_encoder = DistributedDataParallel(target_encoder)
+
     for p in target_encoder.parameters():
         p.requires_grad = False
 
@@ -262,6 +267,9 @@ def main(args, resume_preempt=False):
 
     # -- TRAINING LOOP
     for epoch in range(start_epoch, num_epochs):
+
+        encoder.train(), predictor.train(), target_encoder.train()
+
         logger.info('Epoch %d' % (epoch + 1))
 
         loss_meter = AverageMeter()
@@ -367,6 +375,41 @@ def main(args, resume_preempt=False):
         # -- Save Checkpoint after every epoch
         logger.info('avg. loss %.3f' % loss_meter.avg)
         save_checkpoint(epoch+1)
+
+        # -- VALIDATION STEP
+
+        logger.info('\nValidation at epoch %d' % (epoch + 1))
+
+        encoder.val(), predictor.val(), target_encoder.val()
+        val_loss_meter = AverageMeter()
+
+        with torch.no_grad():
+            for itr_val, (udata, masks_enc, masks_pred) in enumerate(val_unsupervised_loader):
+
+                imgs, masks_enc, masks_pred = load_imgs()
+                    
+                # Forward target
+                h = target_encoder(imgs)
+                h = F.layer_norm(h, (h.size(-1),))  # normalize over feature-dim
+                B = len(h)
+                # -- create targets (masked regions of h)
+                h = apply_masks(h, masks_pred)
+                h = repeat_interleave_batch(h, B, repeat=len(masks_enc))
+
+                # Forward context
+                z = encoder(imgs, masks_enc)
+                z = predictor(z, masks_enc, masks_pred)
+
+                # Compute loss
+                loss = F.smooth_l1_loss(z, h)
+                val_loss = AllReduce.apply(loss)
+
+                val_loss_meter.update(val_loss)
+        
+        logger.info('avg. val loss %.3f' % val_loss_meter.avg)
+
+        epoch_csv_logger.log(epoch + 1, loss_meter.avg, val_loss_meter.avg)
+
 
 
 if __name__ == "__main__":
