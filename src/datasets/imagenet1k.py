@@ -35,7 +35,7 @@ def make_imagenet1k(
     drop_last=True,
     subset_file=None
 ):
-    dataset = GsocDataset(
+    dataset = GsocDataset2(
         root=root_path,
         transform=transform)
     logger.info('GSOC dataset created')
@@ -57,7 +57,7 @@ def make_imagenet1k(
         pin_memory=pin_mem,
         num_workers=num_workers,
         sampler=train_sampler,
-        persistent_workers=False)
+        persistent_workers=True)
 
     val_data_loader = torch.utils.data.DataLoader(
         dataset,
@@ -66,7 +66,7 @@ def make_imagenet1k(
         pin_memory=pin_mem,
         num_workers=num_workers,
         sampler=val_sampler,
-        persistent_workers=False)
+        persistent_workers=True)
     
     logger.info('GSOC unsupervised data loaders created')
 
@@ -82,8 +82,28 @@ class GsocDataset(torch.utils.data.Dataset):
 
     def __getitem__(self, index):
         if self.dataset is None:
+            t0 = time.time()
             self.dataset = h5py.File(self.file_path, 'r')["jet"]
+            t1 = time.time()
+            print('Time to open file: ', t1-t0)
         return self.transform(self.dataset[index])
 
     def __len__(self):
         return self.dataset_len
+
+class GsocDataset2(torch.utils.data.Dataset):
+    def __init__(self, root, transform=None):
+        t0 = time.time()
+        f =  h5py.File(root, 'r')
+        self.jet = f['jet']
+        t1 = time.time()
+        print('time to open file: ', t1-t0)
+        self.transforms = transform
+    def __len__(self):
+        return len(self.jet)
+    def __getitem__(self, idx):
+        #t0 = time.time()
+        data = self.transforms(self.jet[idx])
+        #t1 = time.time()
+        #print('time to get data: ', t1-t0)
+        return data

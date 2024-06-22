@@ -64,7 +64,7 @@ parser.add_argument(
 # --
 log_timings = True
 log_freq = 10
-checkpoint_freq = 50
+checkpoint_freq = 2
 # --
 
 _GLOBAL_SEED = 0
@@ -227,6 +227,12 @@ def main(args, resume_preempt=False):
 
     for p in target_encoder.parameters():
         p.requires_grad = False
+    
+    n_parameters = 0
+    n_parameters += sum(p.numel() for p in encoder.parameters() if p.requires_grad)
+    n_parameters += sum(p.numel() for p in predictor.parameters() if p.requires_grad)
+
+    logger.info('Total train parameters %d' % n_parameters)
 
     # -- momentum schedule
     momentum_scheduler = (ema[0] + i*(ema[1]-ema[0])/(ipe*num_epochs*ipe_scale)
@@ -288,6 +294,7 @@ def main(args, resume_preempt=False):
                 masks_2 = [u.to(device, non_blocking=True) for u in masks_pred]
                 return (imgs, masks_1, masks_2)
             imgs, masks_enc, masks_pred = load_imgs()
+            imgs = imgs.permute(0,2,3,1)
             maskA_meter.update(len(masks_enc[0][0]))
             maskB_meter.update(len(masks_pred[0][0]))
 
@@ -392,6 +399,7 @@ def main(args, resume_preempt=False):
             for itr_val, (udata, masks_enc, masks_pred) in enumerate(val_unsupervised_loader):
 
                 imgs, masks_enc, masks_pred = load_imgs()
+                imgs = imgs.permute(0,2,3,1)
                     
                 # Forward target
                 h = target_encoder(imgs)

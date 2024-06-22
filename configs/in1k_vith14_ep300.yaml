@@ -13,7 +13,7 @@ data:
   use_gaussian_blur: false
   use_horizontal_flip: false
 logging:
-  folder: /content/drive/MyDrive/Logging
+  folder: /content/drive/MyDrive/Logging/vit_tiny
   write_tag: ijepa_gsoc
 mask:
   allow_overlap: false
@@ -34,7 +34,7 @@ meta:
   copy_data: false
   load_checkpoint: false
   model_name: vit_tiny
-  pred_depth: 3
+  pred_depth: 6
   pred_emb_dim: 128
   read_checkpoint: null
   use_bfloat16: true
@@ -42,7 +42,7 @@ optimization:
   ema:
   - 0.996
   - 1.0
-  epochs: 3
+  epochs: 20
   final_lr: 1.0e-06
   final_weight_decay: 0.4
   ipe_scale: 1.0
