@@ -294,7 +294,8 @@ def main(args, resume_preempt=False):
                 masks_2 = [u.to(device, non_blocking=True) for u in masks_pred]
                 return (imgs, masks_1, masks_2)
             imgs, masks_enc, masks_pred = load_imgs()
-            imgs = imgs.permute(0,2,3,1)
+            padding = (0, 1, 0, 1)
+            imgs = torch.nn.functional.pad(imgs, padding, mode='constant', value=0)
             maskA_meter.update(len(masks_enc[0][0]))
             maskB_meter.update(len(masks_pred[0][0]))
 
@@ -399,8 +400,9 @@ def main(args, resume_preempt=False):
             for itr_val, (udata, masks_enc, masks_pred) in enumerate(val_unsupervised_loader):
 
                 imgs, masks_enc, masks_pred = load_imgs()
-                imgs = imgs.permute(0,2,3,1)
-                    
+                padding = (0, 1, 0, 1)
+                imgs = torch.nn.functional.pad(imgs, padding, mode='constant', value=0)
+                      
                 # Forward target
                 h = target_encoder(imgs)
                 h = F.layer_norm(h, (h.size(-1),))  # normalize over feature-dim

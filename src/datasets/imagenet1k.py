@@ -102,8 +102,10 @@ class GsocDataset2(torch.utils.data.Dataset):
     def __len__(self):
         return len(self.jet)
     def __getitem__(self, idx):
-        #t0 = time.time()
-        data = self.transforms(self.jet[idx])
-        #t1 = time.time()
-        #print('time to get data: ', t1-t0)
-        return data
+        t0 = time.time()
+        #data = self.transforms(self.jet[idx])
+        data = self.jet[idx]
+        #data = np.pad(data, ((0, 0), (0, 1), (0, 1)), mode='constant')
+        t1 = time.time()
+        print('time to get data: ', t1-t0)
+        return torch.tensor(data)
