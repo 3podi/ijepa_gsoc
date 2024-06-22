@@ -73,16 +73,17 @@ def make_imagenet1k(
     return dataset, train_data_loader, val_data_loader
 
 class GsocDataset(torch.utils.data.Dataset):
-    def __init__(self, root, transform=None):
-        self.h5_file = h5py.File(root, "r")
-        self.data = self.h5_file["jet"]
+    def __init__(self, root, transform):
+        self.file_path = root
         self.transform = transform
+        self.dataset = None
+        with h5py.File(self.file_path, 'r') as file:
+            self.dataset_len = len(file["jet"])
 
     def __getitem__(self, index):
-        if self.transform:
-           return self.data[index]
-        else:
-           return self.data[index]
-        
+        if self.dataset is None:
+            self.dataset = h5py.File(self.file_path, 'r')["jet"]
+        return self.transform(self.dataset[index])
+
     def __len__(self):
-        return self.data.shape[0]
+        return self.dataset_len

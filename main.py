@@ -268,7 +268,9 @@ def main(args, resume_preempt=False):
     # -- TRAINING LOOP
     for epoch in range(start_epoch, num_epochs):
 
-        encoder.train(), predictor.train(), target_encoder.train()
+        encoder.train()
+        predictor.train()
+        target_encoder.train()
 
         logger.info('Epoch %d' % (epoch + 1))
 
@@ -281,7 +283,7 @@ def main(args, resume_preempt=False):
 
             def load_imgs():
                 # -- unsupervised imgs
-                imgs = udata[0].to(device, non_blocking=True)
+                imgs = udata.to(device, non_blocking=True)
                 masks_1 = [u.to(device, non_blocking=True) for u in masks_enc]
                 masks_2 = [u.to(device, non_blocking=True) for u in masks_pred]
                 return (imgs, masks_1, masks_2)
@@ -380,7 +382,10 @@ def main(args, resume_preempt=False):
 
         logger.info('\nValidation at epoch %d' % (epoch + 1))
 
-        encoder.val(), predictor.val(), target_encoder.val()
+        encoder.eval()
+        predictor.eval()
+        target_encoder.eval()
+
         val_loss_meter = AverageMeter()
 
         with torch.no_grad():

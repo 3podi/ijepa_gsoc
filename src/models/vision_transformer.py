@@ -174,7 +174,7 @@ class Block(nn.Module):
 class PatchEmbed(nn.Module):
     """ Image to Patch Embedding
     """
-    def __init__(self, img_size=224, patch_size=16, in_chans=3, embed_dim=768):
+    def __init__(self, img_size=224, patch_size=16, in_chans=8, embed_dim=768):
         super().__init__()
         num_patches = (img_size // patch_size) * (img_size // patch_size)
         self.img_size = img_size
@@ -194,7 +194,7 @@ class ConvEmbed(nn.Module):
     3x3 Convolution stems for ViT following ViTC models
     """
 
-    def __init__(self, channels, strides, img_size=224, in_chans=3, batch_norm=True):
+    def __init__(self, channels, strides, img_size=224, in_chans=8, batch_norm=True):
         super().__init__()
         # Build the stems
         stem = []
@@ -332,10 +332,10 @@ class VisionTransformer(nn.Module):
         self,
         img_size=[224],
         patch_size=16,
-        in_chans=3,
+        in_chans=8,
         embed_dim=768,
         predictor_embed_dim=384,
-        depth=12,
+        depth=3,
         predictor_depth=12,
         num_heads=12,
         mlp_ratio=4.0,
