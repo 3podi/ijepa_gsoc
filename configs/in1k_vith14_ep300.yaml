@@ -1,19 +1,19 @@
 data:
-  batch_size: 128
+  batch_size: 256
   color_jitter_strength: 0.0
   crop_scale:
   - 0.3
   - 1.0
   crop_size: 126
   image_folder: /content/drive/MyDrive/Data/Dataset_normalized.h5
-  num_workers: 2
+  num_workers: 4
   pin_mem: true
   root_path: /content/drive/MyDrive/Data/Dataset_normalized.h5
   use_color_distortion: false
   use_gaussian_blur: false
   use_horizontal_flip: false
 logging:
-  folder: /content/drive/MyDrive/Logging/vit_tiny
+  folder: /content/drive/MyDrive/Logging/vit_small
   write_tag: ijepa_gsoc
 mask:
   allow_overlap: false
@@ -33,8 +33,8 @@ mask:
 meta:
   copy_data: false
   load_checkpoint: false
-  model_name: vit_tiny
-  pred_depth: 6
+  model_name: vit_small
+  pred_depth: 12
   pred_emb_dim: 384
   read_checkpoint: null
   use_bfloat16: true
