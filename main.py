@@ -267,7 +267,7 @@ def main(args, resume_preempt=False):
             'batch_size': batch_size,
             'lr': lr
         }
-        torch.save(save_dict, latest_path)
+        #torch.save(save_dict, latest_path)
         if (epoch + 1) % checkpoint_freq == 0:
             torch.save(save_dict, save_path.format(epoch=f'{epoch + 1}'))
 

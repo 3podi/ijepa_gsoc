@@ -131,7 +131,7 @@ class GsocDataset3(torch.utils.data.Dataset):
         self.transforms = transforms
         self.preload_size = preload_size
         self.h5_file = h5py.File(self.h5_path, 'r', libver='latest', swmr=True)
-        self.data = self.h5_file['all_jet']
+        self.data = self.h5_file['jet']
         #self.labels = self.h5_file['m0']
         self.dataset_size = self.data.shape[0]
 
@@ -162,35 +162,35 @@ class GsocDataset3(torch.utils.data.Dataset):
     def __del__(self):
         self.h5_file.close()
 
- """    dataset = GsocDataset2(
-        root=root_path,
-        transform=transform)
-    logger.info('GSOC dataset created')
+ #"""    dataset = GsocDataset2(
+ #       root=root_path,
+ #       transform=transform)
+ #   logger.info('GSOC dataset created')
 
-    dataset_size = len(dataset)
-    indices = list(range(dataset_size))
-    np.random.shuffle(indices)
+#    dataset_size = len(dataset)
+#    indices = list(range(dataset_size))
+#    np.random.shuffle(indices)
 
-    train_size = int(0.8 * dataset_size)
-    train_indices, val_indices = indices[:train_size], indices[train_size:]
+#    train_size = int(0.8 * dataset_size)
+#    train_indices, val_indices = indices[:train_size], indices[train_size:]
 
-    train_sampler = SubsetRandomSampler(train_indices)
-    val_sampler = SubsetRandomSampler(val_indices)
+#    train_sampler = SubsetRandomSampler(train_indices)
+#    val_sampler = SubsetRandomSampler(val_indices)
 
-    train_data_loader = torch.utils.data.DataLoader(
-        dataset,
-        collate_fn=collator,
-        batch_size=batch_size,
-        pin_memory=pin_mem,
-        num_workers=num_workers,
-        sampler=train_sampler,
-        persistent_workers=True)
+#    train_data_loader = torch.utils.data.DataLoader(
+#        dataset,
+#        collate_fn=collator,
+#        batch_size=batch_size,
+#        pin_memory=pin_mem,
+#        num_workers=num_workers,
+#        sampler=train_sampler,
+#        persistent_workers=True)
 
-    val_data_loader = torch.utils.data.DataLoader(
-        dataset,
-        collate_fn=collator,
-        batch_size=batch_size,
-        pin_memory=pin_mem,
-        num_workers=num_workers,
-        sampler=val_sampler,
-        persistent_workers=True) """
+#    val_data_loader = torch.utils.data.DataLoader(
+#        dataset,
+#        collate_fn=collator,
+#        batch_size=batch_size,
+#        pin_memory=pin_mem,
+#        num_workers=num_workers,
+#        sampler=val_sampler,
+#        persistent_workers=True) """
