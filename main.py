@@ -75,6 +75,12 @@ torch.backends.cudnn.benchmark = True
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logger = logging.getLogger()
 
+# Early stopping parameters
+patience = 3  
+best_val_loss = float('inf') 
+epochs_no_improve = 0 
+delta = 0.00001
+
 
 def main(args, resume_preempt=False):
 
@@ -424,6 +430,17 @@ def main(args, resume_preempt=False):
         logger.info('avg. val loss %.3f' % val_loss_meter.avg)
 
         epoch_csv_logger.log(epoch + 1, loss_meter.avg, val_loss_meter.avg)
+
+        if best_val_loss - val_loss_meter.avg > delta:
+            best_val_loss = val_loss_meter.avg
+            epochs_no_improve = 0
+        else:
+            epochs_no_improve += 1
+
+        if epochs_no_improve >= patience:
+            print(f'Early stopping triggered after {epoch+1} epochs')
+            break
+
 
 
 
