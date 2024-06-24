@@ -75,12 +75,6 @@ torch.backends.cudnn.benchmark = True
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logger = logging.getLogger()
 
-# Early stopping parameters
-patience = 3  
-best_val_loss = float('inf') 
-epochs_no_improve = 0 
-delta = 0.00001
-
 
 def main(args, resume_preempt=False):
 
@@ -276,6 +270,12 @@ def main(args, resume_preempt=False):
         #torch.save(save_dict, latest_path)
         if (epoch + 1) % checkpoint_freq == 0:
             torch.save(save_dict, save_path.format(epoch=f'{epoch + 1}'))
+
+    # -- Early stopping parameters
+    patience = 3  
+    best_val_loss = float('inf') 
+    epochs_no_improve = 0 
+    delta = 0.00001
 
     # -- TRAINING LOOP
     for epoch in range(start_epoch, num_epochs):
