@@ -208,7 +208,7 @@ def main(args, resume_preempt=False):
             image_folder=image_folder,
             copy_data=copy_data,
             drop_last=True)
-    ipe = len(unsupervised_loader)//batch_size
+    ipe = len(unsupervised_loader)
 
     # -- init optimizer and scheduler
     optimizer, scaler, scheduler, wd_scheduler = init_opt(
