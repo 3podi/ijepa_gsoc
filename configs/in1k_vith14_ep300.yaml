@@ -48,5 +48,5 @@ optimization:
   ipe_scale: 1.0
   lr: 0.001
   start_lr: 0.0002
-  warmup: 40
+  warmup: 180
   weight_decay: 0.04
