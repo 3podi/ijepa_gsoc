@@ -127,7 +127,7 @@ def make_gsoc_dataset_iris(
     train_length = len(train_dataset)
     val_length = len(val_dataset)
     train_indices = list(range(int(train_length)*split_size/100))
-    val_indices = list(range(int(val_length)*split_size/100))
+    val_indices = list(range(int(val_length)*50/100))
 
     train_dataset = Subset(train_dataset, train_indices)
     val_dataset = Subset(val_dataset, val_indices)
@@ -135,7 +135,7 @@ def make_gsoc_dataset_iris(
     # Create the DataLoaders
     train_data_loader = DataLoader(
         train_dataset,
-        batch_size=16,  # Number of chunks to load in each batch
+        batch_size=batch_size,  # Number of chunks to load in each batch
         shuffle=True,  # Shuffle the data between epochs
         collate_fn= collator,  # Use the custom collate function
         num_workers=num_workers  # Number of subprocesses to use for data loading
@@ -144,7 +144,7 @@ def make_gsoc_dataset_iris(
     # Create the DataLoader
     val_data_loader = DataLoader(
         val_dataset,
-        batch_size=16,  # Number of chunks to load in each batch
+        batch_size=batch_size,  # Number of chunks to load in each batch
         shuffle=True,  # Shuffle the data between epochs
         collate_fn=collator,  # Use the custom collate function
         num_workers=num_workers  # Number of subprocesses to use for data loading
