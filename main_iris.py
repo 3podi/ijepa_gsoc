@@ -4,7 +4,7 @@ import copy
 import logging
 import sys
 import yaml
-import wandb
+#import wandb
 
 import numpy as np
 
@@ -334,7 +334,7 @@ def main(args, resume_preempt=False):
             (loss, _new_lr, _new_wd, grad_stats), etime = gpu_timer(train_step)
             loss_meter.update(loss)
             time_meter.update(etime)
-            wandb.log({"batch_loss": loss.item()})
+            #wandb.log({"batch_loss": loss.item()})
 
             # -- Logging
             def log_stats():
@@ -368,7 +368,7 @@ def main(args, resume_preempt=False):
 
         # -- Save Checkpoint after every epoch
         logger.info('avg. loss %.3f' % loss_meter.avg)
-        wandb.log({"avg_epoch_train_loss": loss_meter.avg.item()})
+        #wandb.log({"avg_epoch_train_loss": loss_meter.avg.item()})
         save_checkpoint(epoch+1)
 
         # -- VALIDATION STEP
@@ -406,7 +406,7 @@ def main(args, resume_preempt=False):
                 val_loss_meter.update(val_loss)
         
         logger.info('avg. val loss %.3f' % val_loss_meter.avg)
-        wandb.log({"avg_epoch_val_loss": val_loss_meter.avg.item()})
+        #wandb.log({"avg_epoch_val_loss": val_loss_meter.avg.item()})
 
         epoch_csv_logger.log(epoch + 1, loss_meter.avg, val_loss_meter.avg)
 
@@ -442,11 +442,11 @@ if __name__ == "__main__":
         pp = pprint.PrettyPrinter(indent=4)
         pp.pprint(params)
     
-    wandb.init(
-        project="GSOC", 
-        config=config, 
-        name="run_"+str(params['data']['split_size'])  # Specify the run name here
-    )
+    #wandb.init(
+    #    project="GSOC", 
+    #    config=config, 
+    #    name="run_"+str(params['data']['split_size'])  # Specify the run name here
+    #)
 
     main(args=params)
-    wandb.finish()
+    #wandb.finish()
