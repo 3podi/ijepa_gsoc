@@ -250,10 +250,10 @@ def main(args, resume_preempt=False):
             torch.save(save_dict, save_path.format(epoch=f'{epoch + 1}'))
 
     # -- Early stopping parameters
-    patience = 3  
-    best_val_loss = float('inf') 
-    epochs_no_improve = 0 
-    delta = 0.00001
+    patience = 5  
+    best_val_loss = 1e4 #float('inf') 
+    epochs_no_improvement = 0 
+    #delta = 0.00001
 
     # -- TRAINING LOOP
     for epoch in range(start_epoch, num_epochs):
@@ -410,13 +410,21 @@ def main(args, resume_preempt=False):
 
         epoch_csv_logger.log(epoch + 1, loss_meter.avg, val_loss_meter.avg)
 
-        if best_val_loss - val_loss_meter.avg > delta:
+        #if best_val_loss - val_loss_meter.avg > delta:
+        #    best_val_loss = val_loss_meter.avg
+        #    epochs_no_improve = 0
+        #else:
+        #    epochs_no_improve += 1
+        
+        # Check if current loss is better than best loss by at least 1%
+        if val_loss_meter.avg < best_val_loss * 0.99:
             best_val_loss = val_loss_meter.avg
-            epochs_no_improve = 0
+            epochs_no_improvement = 0  # Reset counter since there was improvement
         else:
-            epochs_no_improve += 1
+            epochs_no_improvement += 1  # Increment counter since there was no significant improvement
+   
 
-        if epochs_no_improve >= patience:
+        if epochs_no_improvement >= patience:
             print(f'Early stopping triggered after {epoch+1} epochs')
             break
 

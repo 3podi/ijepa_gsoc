@@ -16,7 +16,7 @@
 
 #SBATCH --mem=0
 
-#SBATCH --gpus-per-task=1
+#SBATCH --gpus-per-task=3
 
 #SBATCH --requeue 
 
@@ -28,7 +28,9 @@ start=
 (
 (((date +%j)*24))))
 
-timeout 23h python3 main.py --fname configs/vit_b_14.yaml --devices cuda:0
+timeout 23h python3 main_iris.py --fname configs/vit_b_14_25_iris.yaml --devices cuda:0 &
+timeout 23h python3 main_iris.py --fname configs/vit_b_14_50_iris.yaml --devices cuda:0 &
+timeout 23h python3 main_iris.py --fname configs/vit_b_14_75_iris.yaml --devices cuda:0 &
 
 wait
 
