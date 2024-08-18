@@ -13,6 +13,7 @@ data:
   use_gaussian_blur: false
   use_horizontal_flip: false
   split_size: 25
+  chunk_size: 32
 logging:
   folder: ../Logging/vit_base25
   write_tag: ijepa_gsoc

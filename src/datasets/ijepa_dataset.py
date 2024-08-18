@@ -9,6 +9,7 @@ from logging import getLogger
 import torch
 import h5py
 from torch.utils.data import DataLoader
+from torch.utils.data import Subset
 
 _GLOBAL_SEED = 0
 logger = getLogger()
@@ -113,6 +114,7 @@ class GsocDataset3(torch.utils.data.Dataset):
 def make_gsoc_dataset_iris(
     batch_size,
     split_size=None,
+    chunk_size=None,
     collator=None,
     pin_mem=True,
     num_workers=8,
@@ -121,13 +123,13 @@ def make_gsoc_dataset_iris(
     
     # Instantiate the dataset
     # mode can be 'train', 'test', or 'validation' depending on what you're doing
-    train_dataset = Dataset4(file_path=root_path, mode='train', chunk_size=32)
-    val_dataset = Dataset4(file_path=root_path, mode='validation', chunk_size=32)
+    train_dataset = Dataset4(file_path=root_path, mode='train', chunk_size=chunk_size)
+    val_dataset = Dataset4(file_path=root_path, mode='validation', chunk_size=chunk_size)
     
     train_length = len(train_dataset)
     val_length = len(val_dataset)
-    train_indices = list(range(int(train_length)*split_size/100))
-    val_indices = list(range(int(val_length)*50/100))
+    train_indices = list(range(int(train_length*split_size/100)))
+    val_indices = list(range(int(val_length*50/100)))
 
     train_dataset = Subset(train_dataset, train_indices)
     val_dataset = Subset(val_dataset, val_indices)
@@ -137,7 +139,7 @@ def make_gsoc_dataset_iris(
         train_dataset,
         batch_size=batch_size,  # Number of chunks to load in each batch
         shuffle=True,  # Shuffle the data between epochs
-        collate_fn= collator,  # Use the custom collate function
+        collate_fn=collator,  # Use the custom collate function
         num_workers=num_workers  # Number of subprocesses to use for data loading
     )
     

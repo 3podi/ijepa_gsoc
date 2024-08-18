@@ -21,7 +21,7 @@ from src.utils.logging import (
     grad_logger,
     AverageMeter)
 from src.utils.tensors import repeat_interleave_batch
-from src.datasets.ijepa_dataset import make_gsoc_dataset
+from src.datasets.ijepa_dataset import make_gsoc_dataset_iris
 
 from src.helper import (
     load_checkpoint,
@@ -73,7 +73,7 @@ def main(args, resume_preempt=False):
     if not torch.cuda.is_available():
         device = torch.device('cpu')
     else:
-        device = torch.device(args.devices[0])  # Use the first device in the list
+        device = torch.device(args['devices'][0])
         torch.cuda.set_device(device)
 
     # -- DATA
@@ -90,6 +90,7 @@ def main(args, resume_preempt=False):
     crop_size = args['data']['crop_size']
     crop_scale = args['data']['crop_scale']
     split_size = args['data']['split_size']
+    chunk_size = args['data']['chunk_size']
     # --
 
     # -- MASK
@@ -168,6 +169,7 @@ def main(args, resume_preempt=False):
         npred=num_pred_masks,
         allow_overlap=allow_overlap,
         min_keep=min_keep,
+        chunk_size=chunk_size,
         is_iris=True)
 
     #transform = make_transforms(
@@ -179,9 +181,10 @@ def main(args, resume_preempt=False):
     #    color_jitter=color_jitter)
 
     # -- init data-loaders/samplers
-    _, unsupervised_loader, val_unsupervised_loader = make_gsoc_dataset(
+    _, unsupervised_loader, val_unsupervised_loader = make_gsoc_dataset_iris(
             batch_size=batch_size,
             split_size=split_size,
+            chunk_size=chunk_size,
             collator=mask_collator,
             pin_mem=pin_mem,
             num_workers=num_workers,
@@ -293,8 +296,12 @@ def main(args, resume_preempt=False):
                         h = target_encoder(imgs)
                         h = F.layer_norm(h, (h.size(-1),))  # normalize over feature-dim
                         B = len(h)
+                        print('shape encoded images: ', h.shape)
+                        print('shape masks_pred: ', len(masks_pred)) 
+                        print('shape one mask: ', masks_pred[0].shape)
                         # -- create targets (masked regions of h)
                         h = apply_masks(h, masks_pred)
+                        print('shape after apppling mask: ', h.shape)
                         h = repeat_interleave_batch(h, B, repeat=len(masks_enc))
                         return h
 
@@ -444,9 +451,11 @@ if __name__ == "__main__":
     
     wandb.init(
         project="GSOC", 
-        config=config, 
+        config=params, 
         name="run_"+str(params['data']['split_size'])  # Specify the run name here
     )
+    
+    params['devices'] = args.devices
 
     main(args=params)
     wandb.finish()
