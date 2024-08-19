@@ -43,7 +43,7 @@ parser.add_argument(
 
 # --
 log_timings = True
-log_freq = 10
+log_freq = 500
 checkpoint_freq = 1
 # --
 
@@ -296,12 +296,8 @@ def main(args, resume_preempt=False):
                         h = target_encoder(imgs)
                         h = F.layer_norm(h, (h.size(-1),))  # normalize over feature-dim
                         B = len(h)
-                        print('shape encoded images: ', h.shape)
-                        print('shape masks_pred: ', len(masks_pred)) 
-                        print('shape one mask: ', masks_pred[0].shape)
                         # -- create targets (masked regions of h)
                         h = apply_masks(h, masks_pred)
-                        print('shape after apppling mask: ', h.shape)
                         h = repeat_interleave_batch(h, B, repeat=len(masks_enc))
                         return h
 
@@ -341,13 +337,13 @@ def main(args, resume_preempt=False):
             (loss, _new_lr, _new_wd, grad_stats), etime = gpu_timer(train_step)
             loss_meter.update(loss)
             time_meter.update(etime)
-            wandb.log({"batch_loss": loss.item()})
+            wandb.log({"batch_loss": loss})
 
             # -- Logging
             def log_stats():
                 csv_logger.log(epoch + 1, itr, loss, maskA_meter.val, maskB_meter.val, etime)
                 if (itr % log_freq == 0) or np.isnan(loss) or np.isinf(loss):
-                    logger.info('[%d, %5d] loss: %.3f '
+                    logger.info('[%d, %5d] loss: %.6f '
                                 'masks: %.1f %.1f '
                                 '[wd: %.2e] [lr: %.2e] '
                                 '[mem: %.2e] '
@@ -375,7 +371,7 @@ def main(args, resume_preempt=False):
 
         # -- Save Checkpoint after every epoch
         logger.info('avg. loss %.3f' % loss_meter.avg)
-        wandb.log({"avg_epoch_train_loss": loss_meter.avg.item()})
+        wandb.log({"avg_epoch_train_loss": loss_meter.avg})
         save_checkpoint(epoch+1)
 
         # -- VALIDATION STEP
@@ -413,7 +409,7 @@ def main(args, resume_preempt=False):
                 val_loss_meter.update(val_loss)
         
         logger.info('avg. val loss %.3f' % val_loss_meter.avg)
-        wandb.log({"avg_epoch_val_loss": val_loss_meter.avg.item()})
+        wandb.log({"avg_epoch_val_loss": val_loss_meter.avg})
 
         epoch_csv_logger.log(epoch + 1, loss_meter.avg, val_loss_meter.avg)
 
