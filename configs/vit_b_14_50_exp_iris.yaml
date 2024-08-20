@@ -41,7 +41,7 @@ meta:
   read_checkpoint: null
   use_bfloat16: true
 optimization:
-  scheduler: cosine
+  scheduler: exponential
   ema:
   - 0.996
   - 1.0

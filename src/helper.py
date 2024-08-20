@@ -190,7 +190,7 @@ def init_opt(
             final_lr=final_lr,
             T_max=int(ipe_scale*num_epochs*iterations_per_epoch))
     else:
-        gamma = (start_lr / final_lr) ** (1 / ipe*num_epochs)
+        gamma = (start_lr / final_lr) ** (1 / iterations_per_epoch*num_epochs)
         scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=gamma)
     wd_scheduler = CosineWDSchedule(
         optimizer,

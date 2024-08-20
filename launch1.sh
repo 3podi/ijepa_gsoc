@@ -21,7 +21,7 @@
 #SBATCH --requeue 
 
 
-timeout 23h python3 main_iris.py --fname configs/vit_b_14_75_iris.yaml --devices cuda:0 &
+timeout 23h python3 main_iris.py --fname configs/vit_b_14_50_exp_iris.yaml --devices cuda:0 &
 timeout 23h python3 main_iris.py --fname configs/vit_b_14_50_iris.yaml --devices cuda:1 
 
 wait
