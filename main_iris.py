@@ -105,6 +105,7 @@ def main(args, resume_preempt=False):
     # --
 
     # -- OPTIMIZATION
+    lr_scheduler = args['optimization']['scheduler']
     ema = args['optimization']['ema']
     ipe_scale = args['optimization']['ipe_scale']  # scheduler scale factor (def: 1.0)
     wd = float(args['optimization']['weight_decay'])
@@ -117,6 +118,9 @@ def main(args, resume_preempt=False):
 
     # -- LOGGING
     folder = args['logging']['folder']
+    folder = os.path.join(folder, args['fname'].split('/')[-1][:-5])
+    if not os.path.exists(folder):
+        os.makedirs(folder)
     tag = args['logging']['write_tag']
 
     dump = os.path.join(folder, 'params-ijepa.yaml')
@@ -195,6 +199,7 @@ def main(args, resume_preempt=False):
     optimizer, scaler, scheduler, wd_scheduler = init_opt(
         encoder=encoder,
         predictor=predictor,
+        lr_scheduler=lr_scheduler,
         wd=wd,
         final_wd=final_wd,
         start_lr=start_lr,
@@ -448,10 +453,11 @@ if __name__ == "__main__":
     wandb.init(
         project="GSOC", 
         config=params, 
-        name="run_"+str(params['data']['split_size'])  # Specify the run name here
+        name= args.fname.split('/')[-1][:-5]  # Specify the run name here
     )
     
     params['devices'] = args.devices
+    params['fname'] = args.fname
 
     main(args=params)
     wandb.finish()

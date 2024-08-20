@@ -15,7 +15,7 @@ data:
   split_size: 25
   chunk_size: 32
 logging:
-  folder: /pscratch/sd/t/tripodi/Logging/vit_base25
+  folder: /pscratch/sd/t/tripodi/Logging
   write_tag: ijepa_gsoc
 mask:
   allow_overlap: false
@@ -28,24 +28,24 @@ mask:
   min_keep: 10
   num_enc_masks: 1
   num_pred_masks: 4
-  patch_size: 14
+  patch_size: 7
   pred_mask_scale:
   - 0.15
   - 0.2
 meta:
   copy_data: false
   load_checkpoint: false
-  model_name: vit_base
+  model_name: vit_small
   pred_depth: 12
   pred_emb_dim: 384
   read_checkpoint: null
   use_bfloat16: true
 optimization:
-  scheduler: exponential
+  scheduler: cosine
   ema:
   - 0.996
   - 1.0
-  epochs: 30
+  epochs: 20
   final_lr: 1.0e-06
   final_weight_decay: 0.4
   ipe_scale: 1.0
