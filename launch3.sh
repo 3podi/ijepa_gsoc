@@ -23,6 +23,6 @@
 
 timeout 23h python3 main_iris.py --fname configs/vit_s_14_25_exp_iris.yaml --devices cuda:0 &
 timeout 23h python3 main_iris.py --fname configs/vit_s_9_25_exp_iris.yaml --devices cuda:1 &
-timeout 23h python3 main_iris.py --fname configs/vit_s_7_25_exp_iris.yaml --devices cuda:2 &
+timeout 23h python3 main_iris.py --fname configs/vit_s_7_25_exp_iris.yaml --devices cuda:2
 
 wait

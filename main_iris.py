@@ -292,7 +292,12 @@ def main(args, resume_preempt=False):
             maskB_meter.update(len(masks_pred[0][0]))
 
             def train_step():
-                _new_lr = scheduler.step()
+                
+                if lr_scheduler == 'cosine':
+                    _new_lr = scheduler.step()
+                else:
+                    scheduler.step()
+                    _new_lr = scheduler.get_last_lr()[0]
                 _new_wd = wd_scheduler.step()
                 # --
 
@@ -348,6 +353,14 @@ def main(args, resume_preempt=False):
             def log_stats():
                 csv_logger.log(epoch + 1, itr, loss, maskA_meter.val, maskB_meter.val, etime)
                 if (itr % log_freq == 0) or np.isnan(loss) or np.isinf(loss):
+                    #print('epoch: ', epoch)
+                    #print('itr: ', itr)
+                    #print('loss meter avg: ', loss_meter.avg)
+                    #print('mask A avg: ', maskA_meter.avg)
+                    #print('mask B avg: ', maskB_meter.avg)
+                    #print('lnew wd: ', _new_wd)
+                    #print('new lr: ', _new_lr)
+                    #print('loss meter avg: ', loss_meter.avg)
                     logger.info('[%d, %5d] loss: %.6f '
                                 'masks: %.1f %.1f '
                                 '[wd: %.2e] [lr: %.2e] '

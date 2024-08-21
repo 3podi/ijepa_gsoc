@@ -6,7 +6,7 @@
 
 #SBATCH -q preempt
 
-#SBATCH -t 12:00:00
+#SBATCH -t 24:00:00
 
 #SBATCH -n 1
 
@@ -21,6 +21,4 @@
 #SBATCH --requeue 
 
 
-timeout 23h python3 linear_probing.py --fname configs_probing/probing_b_14.yaml --devices cuda:0
-
-wait
+python3 main_iris.py --fname configs/vit_b_14_50_exp_iris.yaml --devices cuda:0

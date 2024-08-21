@@ -130,7 +130,7 @@ def main(args, resume_preempt=False):
     wrapped_model_params = sum(p.numel() for p in model.parameters())
     trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad is True)
     logger.info('Number of parameters in the encoder: %d' % original_model_params)
-    logger.info('Number of parameters in the classifier: %d' % wrapped_model_params-original_model_params)
+    logger.info('Number of parameters in the classifier: %d' % (wrapped_model_params-original_model_params))
     logger.info('Trainable params: %d' % trainable_params)
 
     # -- init dataset
