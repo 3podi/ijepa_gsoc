@@ -79,7 +79,7 @@ def main(args, resume_preempt=False):
     chunk_size = args['data']['chunk_size']
     
     # -- OPTIMIZATION
-    num_epochs = args['optimization']['epochs']
+    num_epochs = args['optimization']['num_epochs']
     start_lr = args['optimization']['start_lr']
     final_lr = args['optimization']['final_lr']
 

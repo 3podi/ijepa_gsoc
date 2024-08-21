@@ -1,0 +1,20 @@
+data:
+  batch_size: 8
+  chunk_size: 32
+  img_size: 126
+  patch_size: 14
+  num_classes: 1
+  num_workers: 2
+  pin_mem: true
+  root_path: ../../../../../global/cfs/cdirs/m4392/ACAT_Backup/Data/Top/Boosted_Top.h5
+logging:
+  folder: /pscratch/sd/t/tripodi/Logging/vit_base25
+  write_tag: probing_ijepa
+meta:
+  model_name: vit_base
+  pretrained_path: /pscratch/sd/t/tripodi/Logging/vit_base25/ijepa_gsoc-ep10.pth.tar
+  use_batch_norm: false
+optimization:
+  num_epochs: 25
+  start_lr: 0.001
+  final_lr: 1.0e-06
