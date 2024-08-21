@@ -15,7 +15,7 @@ data:
   split_size: 50
   chunk_size: 32
 logging:
-  folder: /pscratch/sd/t/tripodi/Logging/vit_base50
+  folder: /pscratch/sd/t/tripodi/Logging
   write_tag: ijepa_gsoc
 mask:
   allow_overlap: false
