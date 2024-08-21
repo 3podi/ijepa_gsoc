@@ -13,16 +13,13 @@ import torch.optim as optim
 from sklearn.metrics import roc_auc_score
 
 from src.utils.logging import (
-    CSVLogger,
-    gpu_timer,
-    grad_logger,
-    AverageMeter)
+    CSVLogger)
 
 from torch.utils.data import Subset
 from torch.utils.data import DataLoader
 from src.datasets.ijepa_dataset import Dataset4 as ProbingDataset
 from src.masks.multiblock import collate
-from src.models.fine_tuning import LinearProbe
+from src.helper_probing import init_model
 import src.models.vision_transformer as vit
 
 import argparse
@@ -116,21 +113,19 @@ def main(args, resume_preempt=False):
                       ('%.5f', 'val_auc'))
 
     # -- init model
-    encoder_ijepa = vit.__dict__[model_name](
-        img_size=[img_size],
-        patch_size=patch_size)
-    embed_dim = encoder_ijepa.embed_dim
-    
-    checkpoint = torch.load(pretrained_path)
-    encoder_ijepa.load_state_dict(checkpoint['target_encoder'])
-    model = LinearProbe(encoder_ijepa, embed_dim, num_classes, use_batch_norm)
+    model = init_model(
+        img_size=img_size,
+        patch_size=patch_size,
+        pretrained_path=pretrained_path,
+        model_name=model_name,
+        num_classes=num_classes,
+        use_batch_norm=use_batch_norm
+    )
 
-    # Verify parameter inclusion
-    original_model_params = sum(p.numel() for p in encoder_ijepa.parameters())
-    wrapped_model_params = sum(p.numel() for p in model.parameters())
+    # -- count parameter
+    model_params = sum(p.numel() for p in model.parameters())
     trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad is True)
-    logger.info('Number of parameters in the encoder: %d' % original_model_params)
-    logger.info('Number of parameters in the classifier: %d' % (wrapped_model_params-original_model_params))
+    logger.info('Number of parameters in the classifier: %d' % model_params)
     logger.info('Trainable params: %d' % trainable_params)
 
     # -- init dataset
@@ -170,7 +165,6 @@ def main(args, resume_preempt=False):
     loss_function = nn.BCEWithLogitsLoss()
     scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.8)
 
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = model.to(device)
 
     def save_checkpoint(epoch):
