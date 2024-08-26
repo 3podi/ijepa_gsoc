@@ -193,7 +193,7 @@ def main(args, resume_preempt=False):
             inputs = torch.nn.functional.pad(inputs, padding, mode='constant', value=0)
 
             inputs = inputs.float().to(device)
-            train_labels = train_labels.to(device)
+            train_labels = train_labels.unsqueeze(1).to(device)
 
             # Forward pass
             outputs = model(inputs)
@@ -239,7 +239,7 @@ def main(args, resume_preempt=False):
                 val_inputs = torch.nn.functional.pad(val_inputs, padding, mode='constant', value=0)
 
                 val_inputs = val_inputs.float().to(device)
-                labels = labels.to(device)
+                labels = labels.unsqueeze(1).to(device)
 
                 # Forward pass
                 logits = model(val_inputs)
