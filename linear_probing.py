@@ -215,11 +215,14 @@ def main(args, resume_preempt=False):
             scheduler.step()
 
             csv_logger.log(epoch + 1, batch_idx, loss)
+            wandb.log({"Batch_loss": loss.item()})
 
 
         epoch_loss = total_loss / len(train_data_loader)
         epoch_accuracy = correct_predictions / total_predictions * 100
         print(f'Epoch {epoch+1}\nTrain loss: {epoch_loss:.4f}, Train accuracy: {epoch_accuracy:.2f}%')
+        wandb.log({"Epoch_train_loss": epoch_loss})
+        wandb.log({"Epoch_train_acc": epoch_accuracy})
 
         # Validation loop
         model.eval()
@@ -258,6 +261,9 @@ def main(args, resume_preempt=False):
         val_epoch_accuracy = val_correct_predictions / val_total_predictions * 100
         auc_score = roc_auc_score(val_labels, val_preds)
         print(f'Validation loss: {val_epoch_loss:.4f}, Validation accuracy: {val_epoch_accuracy:.2f}%, Val AUC score:{auc_score:.4f}')
+        wandb.log({"Epoch_val_loss": val_epoch_loss})
+        wandb.log({"Epoch_val_accuracy": val_epoch_accuracy})
+        wandb.log({"Val_auc_score": auc_score})
 
         epoch_csv_logger.log(epoch + 1, epoch_loss, val_epoch_loss, epoch_accuracy, val_epoch_accuracy, auc_score)
 

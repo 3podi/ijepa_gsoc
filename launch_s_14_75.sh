@@ -21,4 +21,4 @@
 #SBATCH --requeue 
 
 
-python3 main_iris.py --fname configs_probing/vit_s_14_75_iris.yaml --devices cuda:0
+python3 main_iris.py --fname configs/vit_b_14_75_iris.yaml --devices cuda:0
