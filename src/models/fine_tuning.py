@@ -47,7 +47,7 @@ class AddLinear(nn.Module):
         
         x = self.encoder(x)
         x = x.mean(dim=1)
-        x = self.batch_norm
+        x = self.batch_norm(x)
 
         return self.linear(x)
 
