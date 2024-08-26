@@ -11,7 +11,7 @@ logging:
   folder: /pscratch/sd/t/tripodi/Logging/vit_base25
   write_tag: probing_ijepa
 meta:
-  model_name: vit_base
+  model_name: vit_small
   pretrained_path: /pscratch/sd/t/tripodi/Logging/vit_base25/ijepa_gsoc-ep10.pth.tar
   use_batch_norm: false
 optimization:

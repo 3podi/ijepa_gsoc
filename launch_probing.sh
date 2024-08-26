@@ -6,7 +6,7 @@
 
 #SBATCH -q preempt
 
-#SBATCH -t 12:00:00
+#SBATCH -t 24:00:00
 
 #SBATCH -n 1
 
@@ -16,11 +16,10 @@
 
 #SBATCH --mem=0
 
-#SBATCH --gpus-per-task=1
+#SBATCH --gpus-per-task=3
 
 #SBATCH --requeue 
 
-
-timeout 23h python3 linear_probing.py --fname configs_probing/probing_b_14.yaml --devices cuda:0
-
-wait
+python3 linear_probing.py --fname configs_probing/probing_s_14_75.yaml --devices cuda:0 &
+python3 linear_probing.py --fname configs_probing/probing_s_9_75.yaml --devices cuda:1 &
+python3 linear_probing.py --fname configs_probing/probing_s_7_75.yaml --devices cuda:2

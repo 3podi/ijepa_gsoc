@@ -4,7 +4,7 @@ import sys
 import torch
 
 import src.models.vision_transformer as vit
-from src.model.fine_tuning import LinearProbe
+from src.models.fine_tuning import LinearProbe
 import src.models.fine_tuning as model_ft
 
 
