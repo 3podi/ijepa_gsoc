@@ -59,6 +59,7 @@ def main(args, resume_preempt=False):
     model_name = args['meta']['model_name']
     pretrained_path = args['meta']['pretrained_path']
     use_batch_norm = args['meta']['use_batch_norm']
+    use_hidden_layer = args['meta']['use_hidden_layer']
     if not torch.cuda.is_available():
         device = torch.device('cpu')
     else:
@@ -119,7 +120,8 @@ def main(args, resume_preempt=False):
         pretrained_path=pretrained_path,
         model_name=model_name,
         num_classes=num_classes,
-        use_batch_norm=use_batch_norm
+        use_batch_norm=use_batch_norm,
+        use_hidden_layer=use_hidden_layer
     )
 
     # -- count parameter
