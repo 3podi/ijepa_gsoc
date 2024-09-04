@@ -438,16 +438,16 @@ def main(args, resume_preempt=False):
         #    epochs_no_improve += 1
         
         # Check if current loss is better than best loss by at least 1%
-        if val_loss_meter.avg < best_val_loss * 0.99:
-            best_val_loss = val_loss_meter.avg
-            epochs_no_improvement = 0  # Reset counter since there was improvement
-        else:
-            epochs_no_improvement += 1  # Increment counter since there was no significant improvement
+        #if val_loss_meter.avg < best_val_loss * 0.99:
+        #    best_val_loss = val_loss_meter.avg
+        #    epochs_no_improvement = 0  # Reset counter since there was improvement
+        #else:
+        #    epochs_no_improvement += 1  # Increment counter since there was no significant improvement
    
 
-        if epochs_no_improvement >= patience:
-            print(f'Early stopping triggered after {epoch+1} epochs')
-            break
+        #if epochs_no_improvement >= patience:
+        #    print(f'Early stopping triggered after {epoch+1} epochs')
+        #    break
 
 
 
