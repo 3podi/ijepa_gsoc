@@ -83,7 +83,7 @@ def main(args, resume_preempt=False):
 
     # -- LOGGING
     folder = args['logging']['folder']
-    folder = folder+'/Classification'
+    folder = folder+'/Classification_'+str(args['fname'])
     if not os.path.exists(folder):
         os.makedirs(folder)
     tag = args['logging']['write_tag']
