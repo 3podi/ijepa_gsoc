@@ -279,7 +279,7 @@ def main(args, resume_preempt=False):
             print(f'Early stopping triggered after {epoch+1} epochs')
             break
     
-    save_checkpoint()
+    save_checkpoint(epoch)
 
 
 if __name__ == "__main__":
@@ -294,9 +294,9 @@ if __name__ == "__main__":
         pp.pprint(params)
     
     wandb.init(
-        project="GSOC", 
+        project="GSOC_classification", 
         config=params, 
-        name=str(params['logging']['write_tag'])+'_'+params['logging']['folder'].split('/')[-1]  # Specify the run name here
+        name=str(params['logging']['write_tag'])+'_'+args.fname.split('/')[-1]  # Specify the run name here
     )
     
     params['devices'] = args.devices
