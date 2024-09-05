@@ -16,11 +16,11 @@ class LinearProbe(nn.Module):
             param.requires_grad = False
 
         if use_hidden_layer:
-            self.linear = nn.Sequential([
+            self.linear = nn.Sequential(
                 nn.Linear(hidden_dim,1024),
                 nn.ReLU(),
                 nn.Linear(1024,num_classes)
-            ])
+            )
         else:
             self.linear = nn.Linear(hidden_dim,num_classes)
 
@@ -46,11 +46,11 @@ class AddLinear(nn.Module):
         self.encoder = encoder
 
         if use_hidden_layer:
-            self.linear = nn.Sequential([
+            self.linear = nn.Sequential(
                 nn.Linear(hidden_dim,1024),
                 nn.ReLU(),
                 nn.Linear(1024,num_classes)
-            ])
+            )
         else:
             self.linear = nn.Linear(hidden_dim,num_classes)
 
