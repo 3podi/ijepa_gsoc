@@ -300,6 +300,7 @@ if __name__ == "__main__":
     )
     
     params['devices'] = args.devices
+    params['fname'] = args.fname
 
     main(args=params)
     wandb.finish()
