@@ -4,7 +4,7 @@
 
 #SBATCH -C gpu
 
-#SBATCH -q preempt
+#SBATCH -q regular
 
 #SBATCH -t 24:00:00
 
@@ -19,7 +19,6 @@
 #SBATCH --gpus-per-task=4
 
 #SBATCH --requeue 
-
 
 python3 main_iris.py --fname configs/vit_b_9_75_1e5_fix.yaml --devices cuda:0 &
 python3 main_iris.py --fname configs/vit_b_9_75_1e5.yaml --devices cuda:1 &
