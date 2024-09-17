@@ -174,7 +174,7 @@ def main(args, resume_preempt=False):
             'model': model.state_dict()
         }
 
-        torch.save(save_dict, save_path + 'classification_model.pth.tar')
+        torch.save(save_dict, save_path)
 
     start_epoch = 0
     # -- Early stopping parameters
@@ -196,9 +196,11 @@ def main(args, resume_preempt=False):
 
             inputs = inputs.float().to(device)
             train_labels = train_labels.unsqueeze(1).to(device)
+            #print('train labels: ', train_labels)
 
             # Forward pass
             outputs = model(inputs)
+            #print('outputs: ', outputs)
 
             # Loss computation
             loss = loss_function(outputs, train_labels)
@@ -207,6 +209,7 @@ def main(args, resume_preempt=False):
             # Calculate predictions for accuracy
             predicted_probabilities = torch.sigmoid(outputs)
             predicted_labels = (predicted_probabilities > 0.5).float()
+            #print('pred labels: ', predicted_labels)
             correct_predictions += (predicted_labels == train_labels).sum().item()
             total_predictions += train_labels.size(0)
 
