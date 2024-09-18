@@ -7,13 +7,18 @@ import src.models.vision_transformer as vit
 
 
 class LinearProbe(nn.Module):
-    def __init__(self, pretrained_model, hidden_dim, num_classes, use_batch_norm=False, use_hidden_layer=False):
+    def __init__(self, pretrained_model, hidden_dim, num_classes, use_batch_norm=False, use_hidden_layer=False,num_unfreeze_layers=0):
         super().__init__()
         self.encoder = pretrained_model
 
         # Freeze the encoder's parameters
         for param in self.encoder.parameters():
             param.requires_grad = False
+            
+        if num_unfreeze_layers > 0:
+            for block in self.encoder.blocks[-num_unfreeze_layers:]:
+                for param in block.parameters():
+                    param.requires_grad = True
 
         if use_hidden_layer:
             self.linear = nn.Sequential(
@@ -31,15 +36,12 @@ class LinearProbe(nn.Module):
 
 
     def forward(self, x):
-        
-        with torch.no_grad():
-            x = self.encoder(x)
-            x = x.mean(dim=1)
+        x = self.encoder(x)
+        x = x.mean(dim=1)  # Global average pooling
 
         x = self.batch_norm(x)
-
         return self.linear(x)
-    
+        
 class AddLinear(nn.Module):
     def __init__(self, encoder, hidden_dim, num_classes, use_batch_norm=False, use_hidden_layer=False):
         super().__init__()

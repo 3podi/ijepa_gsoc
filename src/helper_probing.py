@@ -20,7 +20,8 @@ def init_model(
     model_name=None,
     num_classes=1,
     use_batch_norm=False,
-    use_hidden_layer=False
+    use_hidden_layer=False,
+    num_unfreeze_layers=0
 ):
     
     if pretrained_path is None:
@@ -45,6 +46,6 @@ def init_model(
     
         checkpoint = torch.load(pretrained_path)
         encoder_ijepa.load_state_dict(checkpoint['target_encoder'])
-        model = LinearProbe(encoder_ijepa, embed_dim, num_classes, use_batch_norm, use_hidden_layer)
+        model = LinearProbe(encoder_ijepa, embed_dim, num_classes, use_batch_norm, use_hidden_layer, num_unfreeze_layers)
         return model
 

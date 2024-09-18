@@ -60,6 +60,7 @@ def main(args, resume_preempt=False):
     pretrained_path = args['meta']['pretrained_path']
     use_batch_norm = args['meta']['use_batch_norm']
     use_hidden_layer = args['meta']['use_hidden_layer']
+    num_unfreeze_layers = args['meta']['num_unfreeze_layers']
     if not torch.cuda.is_available():
         device = torch.device('cpu')
     else:
@@ -121,7 +122,8 @@ def main(args, resume_preempt=False):
         model_name=model_name,
         num_classes=num_classes,
         use_batch_norm=use_batch_norm,
-        use_hidden_layer=use_hidden_layer
+        use_hidden_layer=use_hidden_layer,
+        num_unfreeze_layers=num_unfreeze_layers
     )
 
     # -- count parameter
