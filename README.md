@@ -23,7 +23,7 @@ And you can linear probe or fine tune a model with the line:
 python linear_probing.py  --fname configs/probing_vit_b_14.yaml --devices cuda:0
 ```
 ## Results
-Those are the obtained results. All scores are ROC-AUC metric.
+Those are the obtained results. All scores are ROC-AUC metric. To read more about those results check out the second blogpost.
 
 | Model Name      | Val AUC scratch | Val AUC probe | Val AUC finetuning |
 | --------------- | --------------- | ------------- | ------------------ |
