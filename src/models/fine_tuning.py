@@ -7,7 +7,7 @@ import src.models.vision_transformer as vit
 
 
 class LinearProbe(nn.Module):
-    def __init__(self, pretrained_model, hidden_dim, num_classes, use_batch_norm=False, use_hidden_layer=False,num_unfreeze_layers=0):
+    def __init__(self, pretrained_model, hidden_dim, num_classes, use_batch_norm=False, use_hidden_layer=False, num_unfreeze_layers=0):
         super().__init__()
         self.encoder = pretrained_model
 
