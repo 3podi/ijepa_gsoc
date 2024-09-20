@@ -8,7 +8,9 @@ In this repository it can be found the work done under Machine Learning for Scie
 The aim of the project is to investigate on the use of an I-JEPA architecture for the self-supervised pre-traning stage on unlabeled data from the CMS experiment. The pre-training stage is validated fine-tuning by linear probing the frozen pre-trained models on a downstream binary particle classification task.
 
 To read more about the project:
+
 [Medium blogpost 1/2](https://medium.com/@riccardotripodi/self-supervised-learning-for-end-to-end-particle-reconstruction-for-the-cms-experiment-1-2-6d4d14e8c45b)
+
 [Medium blogpost 2/2](https://medium.com/@riccardotripodi/self-supervised-learning-for-end-to-end-particle-reconstruction-for-the-cms-experiment-2-2-9997aa51ca7d)
 
 ## Code
