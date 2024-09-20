@@ -18,6 +18,10 @@ You can run the following line of code to start the training of a model with a g
 ```bash
 python main.py --fname /configs/vit_b_14.yaml devices cuda:0
 ```
+And you can linear probe or fine tune a model with the line:
+```bash
+python linear_probing.py  --fname configs/probing_vit_b_14.yaml --devices cuda:0
+```
 
 ## Playground
 You can pre-train a 'vit_base' encoder and finetune it on a binary classification task on colab using the following colab notebook:
