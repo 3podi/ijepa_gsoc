@@ -32,6 +32,10 @@ Those are the obtained results. All scores are ROC-AUC metric.
 | vit_b_14        | 0.74            | 0.737         | 0000               |
 | vit_b_9         | 0.73            | 0.738         | 0.79               |
 
+All the models, pre-trained, linear probing and fine tuning, can be downloaded at the following google drive link:
+
+[Download models]()
+
 ## Playground
 You can pre-train a 'vit_base' encoder and finetune it on a binary classification task on colab using the following colab notebook:
 
