@@ -22,6 +22,15 @@ And you can linear probe or fine tune a model with the line:
 ```bash
 python linear_probing.py  --fname configs/probing_vit_b_14.yaml --devices cuda:0
 ```
+## Results
+Those are the obtained results. All scores are ROC-AUC metric.
+
+| Model Name      | Val AUC scratch | Val AUC probe | Val AUC finetuning |
+| --------------- | --------------- | ------------- | ------------------ |
+| vit_s_14        | 0.75            | 0.732         | 0.74               |
+| vit_s_9         | 0.76            | 0.731         | 0.76               |
+| vit_b_14        | 0.74            | 0.737         | 0000               |
+| vit_b_9         | 0.73            | 0.738         | 0.79               |
 
 ## Playground
 You can pre-train a 'vit_base' encoder and finetune it on a binary classification task on colab using the following colab notebook:
