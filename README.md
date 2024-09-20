@@ -14,7 +14,7 @@ To read more about the project:
 [Medium blogpost 2/2](https://medium.com/@riccardotripodi/self-supervised-learning-for-end-to-end-particle-reconstruction-for-the-cms-experiment-2-2-9997aa51ca7d)
 
 ## Code
-To run the project, after cloning this repo and installing the required libraries, you can run the following line of code:
+You can run the following line of code to start the training of a model with a given configuration:
 ```bash
 python main.py --fname /configs/vit_b_14.yaml devices cuda:0
 ```
