@@ -25,12 +25,12 @@ python linear_probing.py  --fname configs/probing_vit_b_14.yaml --devices cuda:0
 ## Results
 Those are the obtained results. All scores are ROC-AUC metric. To read more about those results check out the second blogpost.
 
-| Model Name      | Val AUC scratch | Val AUC probe | Val AUC finetuning |
-| --------------- | --------------- | ------------- | ------------------ |
-| vit_s_14        | 0.75            | 0.732         | 0.74               |
-| vit_s_9         | 0.76            | 0.731         | 0.76               |
-| vit_b_14        | 0.74            | 0.737         | 0000               |
-| vit_b_9         | 0.73            | 0.738         | 0.79               |
+| Model Name      |  Scratch        | Linear probing | Fine-tuning        |
+| --------------- | --------------- | -------------- | ------------------ |
+| vit_s_14        | 0.75            | 0.732          | 0.74               |
+| vit_s_9         | 0.76            | 0.731          | 0.76               |
+| vit_b_14        | 0.74            | 0.737          | 0000               |
+| vit_b_9         | 0.73            | 0.738          | 0.79               |
 
 All the models (pre-training, linear probing and fine tuning) can be downloaded at the following google drive link:
 
