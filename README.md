@@ -32,7 +32,7 @@ Those are the obtained results. All scores are ROC-AUC metric. To read more abou
 | vit_b_14        | 0.74            | 0.737          | 0000               |
 | vit_b_9         | 0.73            | 0.738          | 0.79               |
 
-All the models (pre-training, linear probing and fine tuning) can be downloaded at the following google drive link:
+All the pre-trained models can be downloaded at the following google drive link:
 
 [Download models]()
 
