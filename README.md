@@ -29,7 +29,7 @@ Those are the obtained results. All scores are ROC-AUC metric. To read more abou
 | --------------- | --------------- | -------------- | ------------------ |
 | vit_s_14        | 0.75            | 0.732          | 0.74               |
 | vit_s_9         | 0.76            | 0.731          | 0.76               |
-| vit_b_14        | 0.74            | 0.737          | 0000               |
+| vit_b_14        | 0.74            | 0.737          | 0.78               |
 | vit_b_9         | 0.73            | 0.738          | 0.79               |
 
 All the pre-trained models can be downloaded at the following google drive link:
